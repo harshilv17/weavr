@@ -1,0 +1,5 @@
+{
+  "app/server/**/*.{js,ts}": ["eslint --config app/server/eslint.config.js --fix"],
+  "app/web/**/*.{js,jsx,ts,tsx}": ["eslint --config app/web/eslint.config.mjs --fix"],
+  "*.{js,jsx,ts,tsx,json,md,css}": ["prettier --write"]
+}
