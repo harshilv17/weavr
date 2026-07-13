@@ -1,0 +1,14 @@
+**/.classpath
+**/.dockerignore
+**/.env
+**/.env.*
+**/.git
+**/.gitignore
+**/.next
+**/.vscode
+**/.cache
+**/docker
+**/node_modules
+**/npm-debug.log
+**/*.md
+LICENSE

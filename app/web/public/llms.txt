@@ -1,0 +1,27 @@
+# Weavr
+
+> Weavr is an AI workflow automation platform. Build, connect, and run AI-powered workflows on a visual node-based canvas — with live execution updates and no boilerplate.
+
+Weavr lets you orchestrate AI agents, connect any API, and automate production pipelines without writing glue code. Workflows are built by wiring nodes together on a drag-and-drop canvas and can be executed with live, node-by-node execution traces streamed to the browser.
+
+## Key facts
+
+- Product type: AI workflow automation platform (web application)
+- Builder: visual node-based canvas (drag, drop, and connect nodes)
+- Triggers: manual and webhook
+- Built-in nodes: HTTP Request (GET/POST/PUT/PATCH/DELETE), AI Integration, Slack message, Email (SMTP)
+- Supported AI providers: OpenAI, Anthropic, Groq
+- Execution: real-time, per-node execution trace via live socket updates
+- Pricing: free tier, no credit card required
+- Website: https://weavr.builder-net.tech
+
+## Pages
+
+- [Home](https://weavr.builder-net.tech/): product overview and features
+- [Documentation](https://weavr.builder-net.tech/docs): how to build, connect, and debug workflows
+- [Sign up](https://weavr.builder-net.tech/signup): create a free Weavr workspace
+- [Sign in](https://weavr.builder-net.tech/signin): access an existing account
+
+## Usage
+
+A typical Weavr workflow: add a Trigger node (manual or webhook), connect it to action nodes such as an AI Integration node (choose provider and model, write a prompt), an HTTP Request node (call any API), a Slack node, or an Email node, then run the workflow and watch data flow through each node in real time.
