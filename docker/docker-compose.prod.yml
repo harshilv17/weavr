@@ -1,0 +1,91 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+
+    depends_on:
+      - web
+      - server
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - ../nginx/http.config:/etc/nginx/conf.d/http.conf:ro
+      - ../nginx/https.config:/etc/nginx/conf.d/https.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+
+    restart: unless-stopped
+
+  web:
+    image: amaan1114/weavr-web:latest
+
+    expose:
+      - "3000"
+
+    volumes:
+      - ../app/web:/app/web
+      - /app/web/node_modules
+
+    environment:
+      WATCHPACK_POLLING: "true"
+      backend_URI: ${backend_URI}
+
+    restart: unless-stopped
+
+  server:
+    image: amaan1114/weavr-server:latest
+
+    expose:
+      - "8080"
+
+    volumes:
+      - ../app/server:/app/server
+      - /app/server/node_modules
+
+    environment:
+      PORT: 8080
+      DATABASE_URL: ${DATABASE_URL}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
+      ACCESS_TOKEN_EXPIRY: ${ACCESS_TOKEN_EXPIRY}
+      REFRESH_TOKEN_EXPIRY: ${REFRESH_TOKEN_EXPIRY}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SMTP_SECURE: ${SMTP_SECURE}
+      NODE_ENV: ${NODE_ENV}
+      REDIS_URL: ${REDIS_URL}
+      CLIENT_URL: ${CLIENT_URL}
+      CREDENTIAL_ENCRYPTION_KEY: ${CREDENTIAL_ENCRYPTION_KEY}
+
+    restart: unless-stopped
+  
+  postgres:
+    image: postgres:17-alpine
+
+    expose:
+      - "5432"
+
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+
+    expose:
+      - "6379"
+
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
