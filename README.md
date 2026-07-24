@@ -40,7 +40,7 @@
 ### Clone the repository
 
 ```bash
-git clone https://github.com/devclub-nstru/Weavr.git
+git clone https://github.com/harshilv17/weavr.git
 cd Weavr
 ```
 
@@ -132,8 +132,8 @@ We love contributions! To keep development organized, please follow this workflo
 Thanks to everyone who contributes to Weavr.
 
 <p align="center">
-  <a href="https://github.com/devclub-nstru/Weavr/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=devclub-nstru/Weavr" />
+  <a href="https://github.com/harshilv17/weavr/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=harshilv17/weavr" />
   </a>
 </p>
 
