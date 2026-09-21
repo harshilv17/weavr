@@ -1,4 +1,9 @@
 services:
+  - type: keyvalue
+    name: weavr-redis
+    plan: free
+    ipAllowList: []
+
   - type: web
     name: weavr-api
     runtime: node
@@ -15,7 +20,10 @@ services:
       - key: DATABASE_URL
         sync: false
       - key: REDIS_URL
-        sync: false
+        fromService:
+          name: weavr-redis
+          type: keyvalue
+          property: connectionString
       - key: CLIENT_URL
         sync: false
       - key: ACCESS_TOKEN_SECRET
