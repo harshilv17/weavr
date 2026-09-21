@@ -25,6 +25,7 @@ export const createUser = async (name: string, email: string, password: string) 
       name,
       email,
       password: hashedPassword,
+      isVerified: true,
     });
   } catch (err) {
     return err;
