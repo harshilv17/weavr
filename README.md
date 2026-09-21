@@ -1,10 +1,6 @@
 # Weavr
 
 <p align="center">
-  <img src="./docs/assets/banner.png" alt="Weavr Banner" width="100%">
-</p>
-
-<p align="center">
   <strong>Build, connect, and automate workflows visually.</strong><br>
   A self-hostable workflow automation platform powered by AI, HTTP APIs, webhooks, scheduled jobs, and real-time execution.
 </p>
