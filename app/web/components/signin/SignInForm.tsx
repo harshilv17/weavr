@@ -19,11 +19,18 @@ const inputCls = cn(
   "focus:border-blue-600 focus:ring-[3px] focus:ring-blue-600/20",
 );
 
+const DEMO_ACCOUNTS = [
+  { label: "Demo · Account 1", email: "demo1@weavr.app", password: "Demo@1234" },
+  { label: "Demo · Account 2", email: "demo2@weavr.app", password: "Demo@1234" },
+  { label: "Demo · Account 3", email: "demo3@weavr.app", password: "Demo@1234" },
+];
+
 export default function SignInForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [demoLoading, setDemoLoading] = useState<string | null>(null);
 
   const { user, loading: meLoading, route } = useMe();
 
@@ -39,22 +46,22 @@ export default function SignInForm() {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
+  async function doSignIn(email: string, password: string) {
+    const res = await api.post("/v1/auth/signin", { email, password });
+    if (res.data.data.isVerified === false) {
+      await sendVerificationEmail(email);
+      router.push(`/verification/${email}`);
+    } else {
+      router.push("/dashboard");
+    }
+  }
+
   //handle submit form
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const res = await api.post("/v1/auth/signin", {
-        email: form.email,
-        password: form.password,
-      });
-      if (res.data.data.isVerified === false) {
-        await sendVerificationEmail(form.email);
-        router.push(`/verification/${form.email}`);
-      } else {
-        router.push("/dashboard");
-      }
+      await doSignIn(form.email, form.password);
     } catch (error) {
       const message = axios.isAxiosError(error)
         ? (error.response?.data?.message ?? "Something went wrong. Please try again.")
@@ -62,6 +69,21 @@ export default function SignInForm() {
       toast.error(message);
     } finally {
       setLoading(false);
+    }
+  }
+
+  //one-click demo login
+  async function handleDemoLogin(email: string, password: string) {
+    setDemoLoading(email);
+    try {
+      await doSignIn(email, password);
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? (error.response?.data?.message ?? "Demo login failed. Please try again.")
+        : "Demo login failed. Please try again.";
+      toast.error(message);
+    } finally {
+      setDemoLoading(null);
     }
   }
 
@@ -132,6 +154,29 @@ export default function SignInForm() {
       >
         {loading ? "Signing in…" : "Continue"}
       </button>
+
+      {/* demo accounts */}
+      <div className="mt-6 border-t border-white/[0.06] pt-5">
+        <p className="mb-3 text-[12px] font-medium uppercase tracking-[0.04em] text-zinc-400">
+          Just here to look around?
+        </p>
+        <div className="space-y-2">
+          {DEMO_ACCOUNTS.map((acct) => (
+            <button
+              key={acct.email}
+              type="button"
+              disabled={demoLoading !== null}
+              onClick={() => handleDemoLogin(acct.email, acct.password)}
+              className="flex w-full items-center justify-between rounded border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-left text-[13px] text-white/70 transition-colors hover:border-blue-600/40 hover:bg-blue-600/10 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span>{acct.label}</span>
+              <span className="text-white/30">
+                {demoLoading === acct.email ? "Signing in…" : acct.email}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
     </form>
   );
 }
